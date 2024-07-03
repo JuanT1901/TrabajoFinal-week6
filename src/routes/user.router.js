@@ -4,7 +4,7 @@ const {
   remove,
   update,
   login,
-} = require("../controllers/user.controller");
+} = require("../controllers/user.controllers");
 const express = require("express");
 const { verifyJWT } = require("../utils/verifyJWT");
 
