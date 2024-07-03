@@ -1,10 +1,11 @@
 const User = require("../models/User");
 const catchError = require("../utils/catchError");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const getAll = catchError(async (req, res) => {
   const results = await User.findAll();
-  return res.json(results);
+  return res.status(200).json(results);
 });
 
 const create = catchError(async (req, res) => {
@@ -21,14 +22,9 @@ const remove = catchError(async (req, res) => {
 
 const update = catchError(async (req, res) => {
   const { id } = req.params;
-  
-  const secretCredentials = [password, email];
-  
-  Object.keys(req.body).forEach(credential => {
-    if(credential === secretCredentials[0] || secretCredentials[1]){
-      delete req.body[credential];
-    }
-  });
+
+  const secretCredentials = ["password", "email"];
+  secretCredentials.forEach((credential) => delete req.body[credential]);
 
   const result = await User.update(req.body, {
     where: { id },
@@ -55,16 +51,10 @@ const login = catchError(async (req, res) => {
   return res.json({ user, token });
 });
 
-const logged = catchError(async (req, res) => {
-  const user = req.user;
-  return res.json(user);
-});
-
 module.exports = {
   getAll,
   create,
   remove,
   update,
   login,
-  logged,
 };
