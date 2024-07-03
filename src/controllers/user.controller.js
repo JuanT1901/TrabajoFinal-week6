@@ -41,14 +41,13 @@ const login = catchError(async (req, res) => {
   if (!user) return res.sendStatus(401).json({ error: "Invalid credentials" });
 
   const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid)
-    return res.sendStatus(401).json({ error: "Invalid credentials" });
+  if (!isValid) return res.sendStatus(401).json({ error: "Invalid credentials" });
 
   const token = jwt.sign({ user }, process.env.TOKEN_SECRET, {
     expiresIn: "1d",
   });
 
-  return res.json({ user, token });
+  return res.status(200).json({ user, token });
 });
 
 module.exports = {
