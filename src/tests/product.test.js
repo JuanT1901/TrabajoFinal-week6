@@ -90,4 +90,5 @@ test("Delete -> '/products/:id', should return status code 204", async () => {
     .set("Authorization", `Bearer ${TOKEN}`);
 
   expect(res.status).toBe(204);
+  await category.destroy();
 });
